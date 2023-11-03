@@ -1,9 +1,11 @@
+package Main;
+
 import java.lang.reflect.*;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
- * Inspector class uses reflective techniques to introspect and print
+ * Main.Inspector class uses reflective techniques to introspect and print
  * details of a given object passed into inspect().
  * Repeated objects will be skipped.
  */
