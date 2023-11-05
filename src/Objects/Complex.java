@@ -1,6 +1,12 @@
 package Objects;
 
 public class Complex {
+    public Complex() {
+        this.intField = 0;
+        this.doubleField = 0.0;
+        this.stringField = "";
+        this.simpleField = new Simple();
+    }
     public Complex(int i, double d, String s, Simple obj) {
         this.intField = i;
         this.doubleField = d;

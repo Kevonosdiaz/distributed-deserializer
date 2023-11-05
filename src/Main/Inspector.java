@@ -17,6 +17,9 @@ public class Inspector {
     private static final LinkedList<Class<?>> recurseQueue = new LinkedList<>();
     private static final String EXCLUDE_NAME = "java";
     public static void inspect(Object obj, boolean recursive) {
+        if (obj == null) {
+            return;
+        }
 
         Class<?> classObj = obj.getClass();
         String className = classObj.getName();
