@@ -11,15 +11,18 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Receiver {
-    public Document receiver(int port) {
+    public static Document receive(int port) {
         System.out.println("Receiver: initializing");
         try (ServerSocket server = new ServerSocket(port);
              Socket socket = server.accept();
              Scanner in = new Scanner(socket.getInputStream());)
         {
             System.out.println("Receiver: connected");
-            String xmlData = in.next();
-            return new SAXBuilder().build(new StringReader(xmlData));
+            StringBuilder xmlData = new StringBuilder();
+            while (in.hasNextLine()) {
+                xmlData.append(in.nextLine());
+            }
+            return new SAXBuilder().build(new StringReader(xmlData.toString()));
         } catch (IOException | JDOMException e) {
             System.out.println("Could not rebuild XML document after receiving!");
             throw new RuntimeException(e);

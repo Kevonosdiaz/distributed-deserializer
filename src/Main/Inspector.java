@@ -15,8 +15,8 @@ public class Inspector {
     private static final HashSet<String> seen = new HashSet<>(); // Store name of already seen classes
     private static final LinkedList<Class<?>> traversalQueue = new LinkedList<>();
     private static final LinkedList<Class<?>> recurseQueue = new LinkedList<>();
-    private final String EXCLUDE_NAME = "java";
-    public void inspect(Object obj, boolean recursive) {
+    private static final String EXCLUDE_NAME = "java";
+    public static void inspect(Object obj, boolean recursive) {
 
         Class<?> classObj = obj.getClass();
         String className = classObj.getName();
@@ -50,7 +50,7 @@ public class Inspector {
     }
 
     // Print out details for field values in obj
-    private void printCurrFields(Object obj, boolean recursive, Field[] fields) {
+    private static void printCurrFields(Object obj, boolean recursive, Field[] fields) {
         if (fields.length == 0) {
             System.out.println("Field Values: None (no fields)");
         } else {
@@ -87,7 +87,7 @@ public class Inspector {
     }
 
     // Print out details for field values which are arrays
-    public void printArray(Object obj, Class<?> objClass, boolean recursive) {
+    public static void printArray(Object obj, Class<?> objClass, boolean recursive) {
         Class<?> compType = objClass.componentType();
         System.out.println(compType);
         int length = Array.getLength(obj);
@@ -121,7 +121,7 @@ public class Inspector {
     }
 
     // Print out details for a class
-    private void inspectClass(Class<?> classObj) {
+    private static void inspectClass(Class<?> classObj) {
         String className = classObj.getName();
         if (className.startsWith(EXCLUDE_NAME) || seen.contains(className)) {
             System.out.println("This class (" + className + ") has already been seen or is a java class, so it will not be inspected.");
