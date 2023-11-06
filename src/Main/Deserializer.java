@@ -4,6 +4,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import java.lang.reflect.*;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.HashMap;
@@ -51,6 +52,29 @@ public class Deserializer {
                     } else {
                         Integer id = Integer.parseInt(value.getText());
                         Array.set(object, i, objectIDs.get(id));
+                    }
+                }
+                return object;
+            }
+
+            if (element.getAttribute("set-length") != null) {
+                // Handle HashSet by loading it
+                int length = Integer.parseInt(element.getAttributeValue("set-length"));
+                object = new HashSet<>();
+                String componentType = element.getAttributeValue("component-type");
+                for (int i = 0; i < length; i++) {
+                    // Populate object with all values from XML
+                    Element value = values.get(i);
+                    if (value.getText().equals("null")) {
+                        ((HashSet) object).add(null);
+                        continue;
+                    }
+                    if (componentType.equals("java.lang.Integer")) {
+                        ((HashSet) object).add(Integer.parseInt(value.getText()));
+                    } else if (componentType.equals("java.lang.Double")) {
+                        ((HashSet) object).add(Double.parseDouble(value.getText()));
+                    } else if (componentType.equals("java.lang.Character")) {
+                        ((HashSet) object).add(value.getText().charAt(0));
                     }
                 }
                 return object;

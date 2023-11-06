@@ -2,6 +2,7 @@ package Main;
 
 import java.lang.reflect.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -16,6 +17,7 @@ public class Inspector {
     private static final LinkedList<Class<?>> traversalQueue = new LinkedList<>();
     private static final LinkedList<Class<?>> recurseQueue = new LinkedList<>();
     private static final String EXCLUDE_NAME = "java";
+    private static final String WHITELIST_NAME = "java.util.HashSet";
     public static void inspect(Object obj, boolean recursive) {
         if (obj == null) {
             return;
@@ -25,13 +27,39 @@ public class Inspector {
         String className = classObj.getName();
 
         // Stop once we get to Object level, or if we've already inspected this class
-        if (className.startsWith(EXCLUDE_NAME) || seen.contains(className)) {
-            System.out.println("This class (" + className + ") has already been seen or is a java class, so it will not be inspected.");
+        if (!className.startsWith(WHITELIST_NAME) && (className.startsWith(EXCLUDE_NAME) || seen.contains(className))) {
+//            System.out.println("This class (" + className + ") has already been seen or is a java class, so it will not be inspected.");
             return;
         }
 
         // Print details of class with other method
         inspectClass(classObj);
+
+
+
+        // Print Array values
+        if (classObj.isArray()) {
+            System.out.println("Printing array details:");
+            printArray(obj, classObj, recursive);
+            return;
+        }
+
+        // Print HashSet values
+        if (className.equals(WHITELIST_NAME)) {
+            System.out.println("Printing HashSet details:");
+            HashSet<?> hashSet = (HashSet<?>) obj;
+            Iterator<?> iterator = hashSet.iterator();
+            while (iterator.hasNext()) {
+                // Just primitives, so print it out
+                Object next = iterator.next();
+                if (next == null) {
+                    System.out.println("null");
+                    continue;
+                }
+                System.out.println(next);
+            }
+            return;
+        }
 
         // Current values of fields (specific to object)
         Field[] fields = classObj.getDeclaredFields();
@@ -42,12 +70,11 @@ public class Inspector {
             inspectClass(traversalQueue.removeLast());
         }
 
-        // Print Array values
-        if (classObj.isArray()) {
-            System.out.println("Printing array details:");
-            printArray(obj, classObj, recursive);
-        }
+        recurse(recursive);
 
+    }
+
+    private static void recurse(boolean recursive) {
         if (recursive && !recurseQueue.isEmpty()) {
             System.out.println("Printing field objects (since recursive flag was enabled)");
             while (!recurseQueue.isEmpty()) {
@@ -55,7 +82,6 @@ public class Inspector {
                 inspect(recurseQueue.removeLast(), recursive);
             }
         }
-
     }
 
     // Print out details for field values in obj
