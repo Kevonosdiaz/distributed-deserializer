@@ -42,6 +42,12 @@ public class Inspector {
             inspectClass(traversalQueue.removeLast());
         }
 
+        // Print Array values
+        if (classObj.isArray()) {
+            System.out.println("Printing array details:");
+            printArray(obj, classObj, recursive);
+        }
+
         if (recursive && !recurseQueue.isEmpty()) {
             System.out.println("Printing field objects (since recursive flag was enabled)");
             while (!recurseQueue.isEmpty()) {
@@ -92,9 +98,10 @@ public class Inspector {
     // Print out details for field values which are arrays
     public static void printArray(Object obj, Class<?> objClass, boolean recursive) {
         Class<?> compType = objClass.componentType();
-        System.out.println(compType);
+        System.out.println("Array Type: " + compType);
         int length = Array.getLength(obj);
-        System.out.println(length);
+        System.out.println("Array Length: " + length);
+        System.out.println("Array Values:");
         if (compType.isPrimitive()) {
             for (int i = 0; i < length; i++) System.out.println(Array.get(obj, i));
         } else if (compType.isArray()) {

@@ -20,7 +20,7 @@ public class Deserializer {
             if (element.getAttribute("length") != null) {
                 // Handle array by loading it
                 int length = Integer.parseInt(element.getAttributeValue("length"));
-                Class<?> classObj = Class.forName(element.getAttributeValue("declaringclass"));
+                Class<?> classObj = Class.forName(element.getAttributeValue("class"));
 
                 object = Array.newInstance(classObj.getComponentType(), length);
                 for (int i = 0; i < length; i++) {
@@ -60,7 +60,7 @@ public class Deserializer {
             if (objectIDs.containsKey(id)) {
                 return objectIDs.get(id);
             }
-            // Dynamically load class of the object using "declaringclass" attr but check HashMap
+            // Dynamically load class of the object using "class" attr but check HashMap
             String className = element.getAttributeValue("class");
             // Create an instance of the class
             Class<?> classObj = Class.forName(className);
