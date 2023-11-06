@@ -16,7 +16,7 @@ public class Deserializer {
         Element root = document.getRootElement();
         Element element = root.getChild("object");
         Object object = null;
-        List<Element> values = element.getChildren("value");
+        List<Element> values = element.getChildren();
         try {
             if (element.getAttribute("length") != null) {
                 // Handle array by loading it
@@ -96,7 +96,7 @@ public class Deserializer {
                 String fieldName = e.getAttributeValue("name");
                 Field f = classObj.getDeclaredField(fieldName);
                 f.setAccessible(true);
-                String text = e.getText();
+                String text = e.getChildText("value");
                 if (text.equals("null")) {
                     f.set(obj, null);
                     continue;
@@ -107,8 +107,17 @@ public class Deserializer {
                     f.set(obj, objectIDs.get(refID));
                 }
 
-                // Deal with primitive by creating instance using getText
-                f.set(obj, toWrapper(fieldClass).getConstructor(String.class).newInstance(text));
+                // Deal with primitive by creating instance
+                // Only options are int, char, string, double
+                if (f.getType() == Integer.class || f.getType() == int.class) {
+                    f.set(obj, Integer.parseInt((text)));
+                } else if (f.getType() == Character.class || f.getType() == char.class) {
+                    f.set(obj, text.charAt(0));
+                } else if (f.getType() == Double.class || f.getType() == double.class) {
+                    f.set(obj, Double.parseDouble(text));
+                } else {
+                    f.set(obj, text);
+                }
             }
 
             objectIDs.put(id, obj);

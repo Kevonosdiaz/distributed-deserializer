@@ -13,7 +13,6 @@ public class Main {
             // Call receiver() to receive a document
             Document doc = Receiver.receive(port);
 
-            System.out.println("Just received document!");
             // Call deserialize() to deserialize it
             Object obj = Deserializer.deserialize(doc);
 

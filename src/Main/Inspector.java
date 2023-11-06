@@ -28,7 +28,7 @@ public class Inspector {
 
         // Stop once we get to Object level, or if we've already inspected this class
         if (!className.startsWith(WHITELIST_NAME) && (className.startsWith(EXCLUDE_NAME) || seen.contains(className))) {
-//            System.out.println("This class (" + className + ") has already been seen or is a java class, so it will not be inspected.");
+            System.out.println("This class (" + className + ") has already been seen or is a java class, so it will not be inspected.");
             return;
         }
 
@@ -159,7 +159,7 @@ public class Inspector {
     // Print out details for a class
     private static void inspectClass(Class<?> classObj) {
         String className = classObj.getName();
-        if (className.startsWith(EXCLUDE_NAME) || seen.contains(className)) {
+        if (!className.startsWith(WHITELIST_NAME) && (className.startsWith(EXCLUDE_NAME) || seen.contains(className))) {
             System.out.println("This class (" + className + ") has already been seen or is a java class, so it will not be inspected.");
             return;
         }
