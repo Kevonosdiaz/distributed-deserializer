@@ -6,6 +6,7 @@ public class Simple {
         this.doubleField = 0.0;
         this.charField = 'a';
     }
+
     // Store the following primitive fields
     public Simple(int i, double d, char c) {
         this.intField = i;

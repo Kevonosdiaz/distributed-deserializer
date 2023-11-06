@@ -34,26 +34,20 @@ public class TemplateCreator {
         return new Complex(intField, doubleField, stringField, simpleField);
     }
 
-    public static Object[] createObjectArray() {
-        // Ask user for size of object array
+    // This just omits the Object field so that it can be added later
+    public static Complex createCircularComplex() {
+        // Ask user for params of Complex object
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter the size of the array:");
-        int size = scanner.nextInt();
-        Object[] objectArray = new Object[size];
-        // Loop size times, asking user to add either a simple or complex object
-        for (int i = 0; i < size; i++) {
-            System.out.println("Would you like to add a Simple or Complex object? (simple/complex)");
-            String userChoice = scanner.next();
-            if (userChoice.equals("simple")) {
-                Simple simple = createSimple();
-                objectArray[i] = simple;
-            } else {
-                Complex complex = createComplex();
-                objectArray[i] = complex;
-            }
-        }
-        return objectArray;
+        System.out.println("Please enter the following parameters for the Complex object:");
+        System.out.println("Please enter an integer value for the int field:");
+        int intField = scanner.nextInt();
+        System.out.println("Please enter a double value for the double field:");
+        double doubleField = scanner.nextDouble();
+        System.out.println("Please enter a string value for the string field:");
+        String stringField = scanner.nextLine();
+        return new Complex(intField, doubleField, stringField, null);
     }
+
     public static int[] createIntArray() {
         // Ask user for size of int array
         Scanner scanner = new Scanner(System.in);
@@ -87,7 +81,7 @@ public class TemplateCreator {
         do {
             System.out.println("Please enter the data type of the HashSet (int, double, or char):");
             dataType = scanner.next();
-        } while (Objects.equals(dataType, "int") || Objects.equals(dataType, "double") || Objects.equals(dataType, "char")) ;
+        } while (!Objects.equals(dataType, "int") && !Objects.equals(dataType, "double") && !Objects.equals(dataType, "char")) ;
         // Keep getting input until user enters a valid data type
 
         if (Objects.equals(dataType, "int")) return createHashSetInt();
@@ -100,11 +94,11 @@ public class TemplateCreator {
     public static HashSet<Integer> createHashSetInt() {
         // Ask user for size of HashSet
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter the size of the HashSet:");
+        System.out.println("Please enter the max size of the HashSet:");
         int size = scanner.nextInt();
         HashSet<Integer> hashSet = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
-            System.out.println("Please enter an integer value for the HashSet at index " + i + ":");
+            System.out.println("Please enter an integer value for the #" + (i+1) + " integer:");
             hashSet.add(scanner.nextInt());
         }
         return hashSet;
@@ -113,11 +107,11 @@ public class TemplateCreator {
     public static HashSet<Double> createHashSetDouble() {
         // Ask user for size of HashSet
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter the size of the HashSet:");
+        System.out.println("Please enter the max size of the HashSet:");
         int size = scanner.nextInt();
         HashSet<Double> hashSet = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
-            System.out.println("Please enter a double value for the HashSet at index " + i + ":");
+            System.out.println("Please enter a double value for the #" + (i+1) + " double:");
             hashSet.add(scanner.nextDouble());
         }
         return hashSet;
@@ -126,11 +120,11 @@ public class TemplateCreator {
     public static HashSet<Character> createHashSetChar() {
         // Ask user for size of HashSet
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter the size of the HashSet:");
+        System.out.println("Please enter the max size of the HashSet:");
         int size = scanner.nextInt();
         HashSet<Character> hashSet = new HashSet<>(size);
         for (int i = 0; i < size; i++) {
-            System.out.println("Please enter a character value for the HashSet at index " + i + ":");
+            System.out.println("Please enter a character value for the #" + (i+1) + " char:");
             hashSet.add(scanner.next().charAt(0));
         }
         return hashSet;

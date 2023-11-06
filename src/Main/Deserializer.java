@@ -97,9 +97,12 @@ public class Deserializer {
                 Field f = classObj.getDeclaredField(fieldName);
                 f.setAccessible(true);
                 String text = e.getChildText("value");
-                if (text.equals("null")) {
-                    f.set(obj, null);
-                    continue;
+                if (text == null) {
+                    text = e.getChildText("reference");
+                    if (text == null) {
+                        f.set(obj, null);
+                        continue;
+                    }
                 }
                 if (e.getAttribute("reference") != null) {
                     // Dealing with a reference tag
@@ -119,9 +122,9 @@ public class Deserializer {
                     f.set(obj, text);
                 }
             }
-
+            System.out.println(obj);
             objectIDs.put(id, obj);
-            return object;
+            return obj;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException | InaccessibleObjectException | NoSuchFieldException e) {
             throw new RuntimeException(e);
